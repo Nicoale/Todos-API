@@ -1,8 +1,13 @@
-Rails.application.routes.draw do
-  devise_for :users
-  namespace :v1, default: { format: :json } do
-    mount_devise_token_auth_for 'User', at: 'auth', skip: %i[omniauth_callbacks]
+
+Rails.application.routes.draw do 
+namespace :api do 
+  namespace :v0 do 
+    namespace :v1, default: { format: :json } do
+    resources :pings, only[:index], constraints: { format: 'json' } 
+    devise_for :users
+      mount_devise_token_auth_for 'User', at: 'auth', skip: %i[omniauth_callbacks]
+      root to: 'home#index'
+    end
   end
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  root to: 'home#index'
+end
 end
